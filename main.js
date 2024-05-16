@@ -22,7 +22,8 @@ let layerControl = L.control.layers({
     "Esri WorldTopoMap": L.tileLayer.provider("Esri.WorldTopoMap"),
     "Esri WorldImagery": L.tileLayer.provider("Esri.WorldImagery").addTo(map)
 }, {
-    "Wettervorhersage MET Norway": themaLayer.forecast
+    "Wettervorhersage MET Norway": themaLayer.forecast,
+    "ECMWF Windvorhersage": themaLayer.wind,
 }).addTo(map);
 
 // Maßstab
