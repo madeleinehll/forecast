@@ -53,17 +53,17 @@ async function showForecast(url) {
                 <li>Niederschlagsmenge (mm): ${details.precipitation_amount}</li>
                 <li>Luftfeuchtigkeit(%): ${details.relative_humidity}</li>
                 <li>Windrichtung (°): ${details.wind_from_direction}</li>
-                <li>Windgeschwindigkeit (km/h): ${Math.round(details.wind_speed*3.6)}</li>
+                <li>Windgeschwindigkeit (km/h): ${Math.round(details.wind_speed * 3.6)}</li>
             </ul>
             `;
             //Wettericons für die nächsten 24 Stunden in 3-Stunden Schritten
-            for(let i=0; i<=24; i+= 3){
+            for (let i = 0; i <= 24; i += 3) {
                 let symbol = feature.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
                 content += `<img src="icons/${symbol}.svg" alt="${symbol}" style ="width:32px" title="${time.toLocaleString()}">`
             }
 
             //Link zum Datendownload
-            content+= `
+            content += `
             <p><a href="${url}"target="met.no">Daten downloaden</a></p>
             `;
             L.popup(latlng, {
@@ -74,39 +74,41 @@ async function showForecast(url) {
 }
 //showForecast("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=47.267222&lon=11.392778");
 //auf Kartenklick reagieren und pop up öffnen
-map.on("click",function(evt){
+map.on("click", function (evt) {
     //console.log(evt);
     //console.log(evt.latlng.lat,evt.latlng.lng);
     showForecast(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${evt.latlng.lat}&lon=${evt.latlng.lng}`);
 });
 //eher selten verwendet, Klick auf Innsbruck simulieren anstatt showForecast mit latlng von Innsbruck
-map.fire("click",{
+map.fire("click", {
     latlng: ibk
 });
 
 //Windkarte
-async function loadWind(url){
-    const response =await fetch (url);
-    const jsondata = await response.json ();
+async function loadWind(url) {
+    const response = await fetch(url);
+    const jsondata = await response.json();
     console.log(jsondata);
     L.velocityLayer({
-        data:jsondata, 
+        data: jsondata,
         lineWidth: 2,
         displayOptions: {
             directionString: "Windrichtung",
             speedString: "Windgeschwindigkeit",
             speedUnit: "k/h",
-            position:"bottomright",
+            position: "bottomright",
             velocityType: "",
         }
     }).addTo(themaLayer.wind);
     //Vorhersagezeitpunkt ermitteln
     let forecastDate = new Date(jsondata[0].header.refTime);
-    forecastDate.setHours(forecastDate.getHours() +jsondata[0].header.forecastTime);
+    forecastDate.setHours(forecastDate.getHours() + jsondata[0].header.forecastTime);
     console.log(forecastDate);
     //innerHTML verwenden zum reinschreiben des Datums, ID an Forecast
-    document.querySelector("#forecast-date").innerHTML=`
+    document.querySelector("#forecast-date").innerHTML = `
     (<a href= "${url}" target="met.no">Stand ${forecastDate.toLocaleString()}</a>)
     `;
+    // document.querySelector("#map").innerHTML ="heute keine Karte"
+    //document.querySelector("body").innerHTML = "das wars für heute"
 }
 loadWind("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json");
