@@ -13,7 +13,8 @@ let map = L.map("map", {
 
 // thematische Layer
 let themaLayer = {
-    forecast: L.featureGroup().addTo(map)
+    forecast: L.featureGroup().addTo(map),
+    wind: L.featureGroup().addTo(map)
 }
 
 // Hintergrundlayer
