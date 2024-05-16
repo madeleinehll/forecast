@@ -39,7 +39,7 @@ async function showForecast(url) {
     console.log(jsondata);
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
-            let content = 
+            let content = `
             <ul>
                 <li>Luftdruck Meereshöhe (hPa): air_pressure_at_sea_level</li>
                 <li>Lufttemperatur (°C): air_temperature </li>
@@ -49,6 +49,7 @@ async function showForecast(url) {
                 <li>Windrichtung (°): wind_from_direction</li>
                 <li>Windgeschwindigkeit (km/h): wind_speed</li>
             </ul>
+            `;
             L.popup(latlng, { 
                 content: content 
             }).openOn(themaLayer.forecast);
