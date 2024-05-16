@@ -40,8 +40,10 @@ async function showForecast(url) {
     L.geoJSON(jsondata, {
         pointToLayer: function (feature, latlng) {
             let details = feature.properties.timeseries[0].data.instant.details;
+            let time = new Date(feature.properties.timeseries[0].time);
             console.log(details);
             let content = `
+            <h4>Wettervorhersage für ${time.toLocaleString()}</h4>
             <ul>
                 <li>Luftdruck Meereshöhe (hPa): ${details.air_pressure_at_sea_level}</li>
                 <li>Lufttemperatur (°C): ${details.air_temperature} </li>
