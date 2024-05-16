@@ -88,5 +88,8 @@ async function loadWind(url){
     const response =await fetch (url);
     const jsondata = await response.json ();
     console.log(jsondata);
+    L.velocityLayer({
+        data:jsondata
+    }).addTo(themaLayer.wind);
 }
 loadWind("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json");
